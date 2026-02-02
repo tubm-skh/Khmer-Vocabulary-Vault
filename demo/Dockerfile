@@ -9,3 +9,4 @@ COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 # De Render tu nap cac bien moi truong ban da lam
 ENTRYPOINT ["java", "-Xmx256m", "-jar", "app.jar"]
+# Final deploy for Vitou
