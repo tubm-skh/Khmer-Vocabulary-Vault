@@ -7,5 +7,5 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-# Chi chay lenh don gian de Render tu nap ev vao
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# De Render tu nap cac bien moi truong ban da lam
+ENTRYPOINT ["java", "-Xmx256m", "-jar", "app.jar"]
