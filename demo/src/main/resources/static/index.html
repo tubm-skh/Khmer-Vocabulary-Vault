@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Khmer IT Vocabulary Vault</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #f4f4f9; }
+        .container { max-width: 600px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ddd; }
+        button { background-color: #28a745; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #218838; }
+        .word-list { margin-top: 20px; border-top: 1px solid #eee; }
+        .word-item { padding: 10px; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>🇰🇭 Khmer IT Vocabulary</h2>
+    <input type="text" id="vn" placeholder="Tiếng Việt (VD: Lập trình)">
+    <input type="text" id="kh" placeholder="Tiếng Khmer (VD: កម្មវិធី)">
+    <input type="text" id="phonetic" placeholder="Phiên âm">
+    <button onclick="addWord()">Lưu từ vựng</button>
+
+    <div class="word-list" id="wordList">
+        <h3>Danh sách đã lưu:</h3>
+    </div>
+</div>
+
+<script>
+    // Hàm load danh sách từ khi mở trang
+    async function loadWords() {
+        const res = await fetch('/api/words');
+        const words = await res.json();
+        const list = document.getElementById('wordList');
+        list.innerHTML = '<h3>Danh sách đã lưu:</h3>';
+        words.forEach(w => {
+            list.innerHTML += `<div class="word-item"><b>${w.vietnamese}</b>: ${w.khmer} (${w.phonetic})</div>`;
+        });
+    }
+
+    // Hàm thêm từ mới
+    async function addWord() {
+        const data = {
+            vietnamese: document.getElementById('vn').value,
+            khmer: document.getElementById('kh').value,
+            phonetic: document.getElementById('phonetic').value
+        };
+
+        await fetch('/api/words', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        alert('Đã lưu thành công!');
+        loadWords(); // Refresh danh sách
+    }
+
+    loadWords();
+</script>
+</body>
+</html>
